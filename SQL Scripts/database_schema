@@ -1,0 +1,180 @@
+SQL> CONNECT farm_user/agriculture@XE
+Connected.
+SQL> -- 1. Create Regions Table
+SQL> CREATE TABLE regions (
+  2      region_id NUMBER PRIMARY KEY,
+  3      region_name VARCHAR2(50) NOT NULL,
+  4      country VARCHAR2(50) DEFAULT 'Rwanda'
+  5  );
+
+Table created.
+SQL> -- 2. Create Products Table
+SQL> CREATE TABLE products (
+  2      product_id NUMBER PRIMARY KEY,
+  3      product_name VARCHAR2(100) NOT NULL,
+  4      category VARCHAR2(50),
+  5      unit_price NUMBER(10,2) NOT NULL
+  6  );
+
+Table created.
+
+SQL> -- 3. Create Customers Table
+SQL> CREATE TABLE customers (
+  2      customer_id NUMBER PRIMARY KEY,
+  3      name VARCHAR2(100) NOT NULL,
+  4      region_id NUMBER NOT NULL,
+  5      customer_type VARCHAR2(50) CHECK (customer_type IN ('Wholesaler', 'Retailer', 'Exporter')),
+  6      join_date DATE
+  7  );
+
+Table created.
+
+SQL> -- 4. Create Sales Transactions Table
+SQL> CREATE TABLE sales_transactions (
+  2      transaction_id NUMBER PRIMARY KEY,
+  3      customer_id NUMBER NOT NULL,
+  4      product_id NUMBER NOT NULL,
+  5      region_id NUMBER NOT NULL,
+  6      sale_date DATE NOT NULL,
+  7      quantity NUMBER NOT NULL,
+  8      total_amount NUMBER(12,2) NOT NULL
+  9  );
+
+Table created.
+Table created.
+
+SQL> -- Add foreign keys after creating all tables
+SQL> ALTER TABLE customers ADD CONSTRAINT fk_cust_region
+  2  FOREIGN KEY (region_id) REFERENCES regions(region_id);
+
+Table altered.
+
+SQL>
+SQL> ALTER TABLE sales_transactions ADD CONSTRAINT fk_trans_customer
+  2  FOREIGN KEY (customer_id) REFERENCES customers(customer_id);
+
+Table altered.
+
+SQL>
+SQL> ALTER TABLE sales_transactions ADD CONSTRAINT fk_trans_product
+  2  FOREIGN KEY (product_id) REFERENCES products(product_id);
+
+Table altered.
+
+SQL>
+SQL> ALTER TABLE sales_transactions ADD CONSTRAINT fk_trans_region
+  2  FOREIGN KEY (region_id) REFERENCES regions(region_id);
+
+Table altered.
+
+SQL> -- Insert Regions
+SQL> INSERT INTO regions VALUES (1, 'Northern Province', 'Rwanda');
+
+1 row created.
+
+SQL> INSERT INTO regions VALUES (2, 'Southern Province', 'Rwanda');
+
+1 row created.
+
+SQL> INSERT INTO regions VALUES (3, 'Eastern Province', 'Rwanda');
+
+1 row created.
+
+SQL> INSERT INTO regions VALUES (4, 'Western Province', 'Rwanda');
+
+1 row created.
+
+SQL>
+SQL> -- Insert Products
+SQL> INSERT INTO products VALUES (1, 'Arabica Coffee', 'Beverages', 5000);
+
+1 row created.
+
+SQL> INSERT INTO products VALUES (2, 'Maize', 'Cereals', 800);
+
+1 row created.
+
+SQL> INSERT INTO products VALUES (3, 'Beans', 'Legumes', 1200);
+
+1 row created.
+
+SQL> INSERT INTO products VALUES (4, 'Tea Leaves', 'Beverages', 3500);
+
+1 row created.
+
+SQL> INSERT INTO products VALUES (5, 'Potatoes', 'Vegetables', 600);
+
+1 row created.
+
+SQL>
+SQL> -- Insert Customers
+SQL> INSERT INTO customers VALUES (101, 'Green Market Ltd', 1, 'Wholesaler', DATE '2024-01-15');
+
+1 row created.
+
+SQL> INSERT INTO customers VALUES (102, 'City Supermarket', 2, 'Retailer', DATE '2024-02-20');
+
+1 row created.
+
+SQL> INSERT INTO customers VALUES (103, 'Export Partners Co', 3, 'Exporter', DATE '2024-01-10');
+
+1 row created.
+
+SQL> INSERT INTO customers VALUES (104, 'Regional Distributors', 4, 'Wholesaler', DATE '2024-03-05');
+
+1 row created.
+
+SQL> INSERT INTO customers VALUES (105, 'Local Farm Store', 1, 'Retailer', DATE '2024-02-28');
+
+1 row created.
+
+SQL>
+SQL> -- Insert Sales Transactions
+SQL> INSERT INTO sales_transactions VALUES (1001, 101, 1, 1, DATE '2025-01-15', 50, 250000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1002, 101, 2, 1, DATE '2025-01-20', 100, 80000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1003, 102, 1, 2, DATE '2025-01-25', 30, 150000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1004, 103, 3, 3, DATE '2025-02-05', 80, 96000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1005, 104, 4, 4, DATE '2025-02-10', 40, 140000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1006, 101, 1, 1, DATE '2025-02-15', 60, 300000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1007, 102, 2, 2, DATE '2025-02-20', 120, 96000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1008, 105, 5, 1, DATE '2025-03-01', 70, 42000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1009, 103, 1, 3, DATE '2025-03-10', 45, 225000);
+
+1 row created.
+
+SQL> INSERT INTO sales_transactions VALUES (1010, 104, 3, 4, DATE '2025-03-15', 90, 108000);
+
+1 row created.
+
+SQL>
+SQL> -- Commit the changes
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT * FROM regions;
+
