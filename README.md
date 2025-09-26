@@ -56,4 +56,89 @@ Table created.
 ER diagram provides the foundational database structure that enables all window function analyses by clearly defining relationships between regions, products, customers, and sales transactions.
 ![ER-D](screenshots/ER_diagram.PNG)
 
+1. Ranking Functions (RANK, DENSE_RANK, ROW_NUMBER)
+Purpose: Identify top-performing customers in each region
+Top Customers by Revenue per Region (RANK, DENSE_RANK, ROW_NUMBER)
 
+SQL> SELECT
+  2      c.region_id,
+  3      c.customer_id,
+  4      c.name AS customer_name,
+  5      SUM(t.total_amount) AS total_revenue,
+  6      RANK() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS revenue_rank,
+  7      DENSE_RANK() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS dense_rank,
+  8      ROW_NUMBER() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS row_num
+  9  FROM sales_transactions t
+ 10  JOIN customers c ON t.customer_id = c.customer_id
+ 11  GROUP BY c.region_id, c.customer_id, c.name
+ 12  ORDER BY c.region_id, revenue_rank;
+![query](screenshots/query-1.PNG)
+
+Key Insight: Green Market Ltd is the #1 customer in Northern Province, generating 630,000 revenue.
+
+3. Aggregate Functions (SUM with OVER)
+Purpose: Track cumulative sales growth over time
+
+SQL> -- Query 2: Running Total & Moving Average
+SQL> SELECT
+  2      r.region_name,
+  3      TO_CHAR(t.sale_date, 'YYYY-MM') AS sales_month,
+  4      SUM(t.total_amount) AS monthly_revenue,
+  5      SUM(SUM(t.total_amount)) OVER (
+  6          PARTITION BY r.region_id
+  7          ORDER BY TO_CHAR(t.sale_date, 'YYYY-MM')
+  8          ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  9      ) AS running_total
+ 10  FROM sales_transactions t
+ 11  JOIN regions r ON t.region_id = r.region_id
+ 12  GROUP BY r.region_id, r.region_name, TO_CHAR(t.sale_date, 'YYYY-MM')
+ 13  ORDER BY r.region_id, sales_month;
+![query](screenshots/query-2.PNG)
+
+Key Insight: Northern Province reached 972,000 in cumulative sales by March 2025.
+
+4. Navigation Functions (LAG for Growth %)
+Purpose: Analyze month-over-month performance changes
+
+SQL> -- Query 3: Month-over-Month Growth
+SQL> SELECT
+  2      r.region_name,
+  3      TO_CHAR(t.sale_date, 'YYYY-MM') AS sales_month,
+  4      SUM(t.total_amount) AS monthly_revenue,
+  5      LAG(SUM(t.total_amount)) OVER (
+  6          PARTITION BY r.region_id
+  7          ORDER BY TO_CHAR(t.sale_date, 'YYYY-MM')
+  8      ) AS previous_month,
+  9      ROUND(
+ 10          ((SUM(t.total_amount) - LAG(SUM(t.total_amount)) OVER (
+ 11              PARTITION BY r.region_id
+ 12              ORDER BY TO_CHAR(t.sale_date, 'YYYY-MM')
+ 13          )) / LAG(SUM(t.total_amount)) OVER (
+ 14              PARTITION BY r.region_id
+ 15              ORDER BY TO_CHAR(t.sale_date, 'YYYY-MM')
+ 16          )) * 100, 2
+ 17      ) AS growth_percent
+ 18  FROM sales_transactions t
+ 19  JOIN regions r ON t.region_id = r.region_id
+ 20  GROUP BY r.region_id, r.region_name, TO_CHAR(t.sale_date, 'YYYY-MM')
+ 21  ORDER BY r.region_id, sales_month;
+ 
+   ![query](screenshots/query-3.PNG)
+   Key Insight: Some regions showed over 100% growth between months, indicating seasonal patterns.
+   
+   4. Distribution Functions (NTILE for Segmentation)
+Purpose: Classify customers into spending tiers
+QL> -- Query 4: Customer Segmentation (NTILE)
+
+SQL> SELECT
+  2      c.customer_id,
+  3      c.name AS customer_name,
+  4      SUM(t.total_amount) AS total_spent,
+  5      NTILE(4) OVER (ORDER BY SUM(t.total_amount) DESC) AS spending_quartile
+  6  FROM sales_transactions t
+  7  JOIN customers c ON t.customer_id = c.customer_id
+  8  GROUP BY c.customer_id, c.name
+  9  ORDER BY total_spent DESC;
+ ![query](screenshots/query-4.PNG)
+ 
+Key Insight: Customers segmented into Platinum, Gold, Silver, Bronze tiers for differentiated marketing.
