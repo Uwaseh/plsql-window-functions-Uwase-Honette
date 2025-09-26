@@ -176,5 +176,556 @@ SQL> COMMIT;
 
 Commit complete.
 
+ REGION_ID REGION_NAME
+---------- --------------------------------------------------
+COUNTRY
+--------------------------------------------------
+         1 Northern Province
+Rwanda
+
+         2 Southern Province
+Rwanda
+
+         3 Eastern Province
+Rwanda
+
+
+ REGION_ID REGION_NAME
+---------- --------------------------------------------------
+COUNTRY
+--------------------------------------------------
+         4 Western Province
+Rwanda
+
+
+SQL> SELECT * FROM products;
+
+PRODUCT_ID
+----------
+PRODUCT_NAME
+--------------------------------------------------------------------------------
+CATEGORY                                           UNIT_PRICE
+-------------------------------------------------- ----------
+         1
+Arabica Coffee
+Beverages                                                5000
+
+         2
+Maize
+Cereals                                                   800
+
+PRODUCT_ID
+----------
+PRODUCT_NAME
+--------------------------------------------------------------------------------
+CATEGORY                                           UNIT_PRICE
+-------------------------------------------------- ----------
+
+         3
+Beans
+Legumes                                                  1200
+
+         4
+Tea Leaves
+
+PRODUCT_ID
+----------
+PRODUCT_NAME
+--------------------------------------------------------------------------------
+CATEGORY                                           UNIT_PRICE
+-------------------------------------------------- ----------
+Beverages                                                3500
+
+         5
+Potatoes
+Vegetables                                                600
+
+
+SQL> SELECT * FROM customers;
+
+CUSTOMER_ID
+-----------
+NAME
+--------------------------------------------------------------------------------
+ REGION_ID CUSTOMER_TYPE                                      JOIN_DATE
+---------- -------------------------------------------------- ---------
+        101
+Green Market Ltd
+         1 Wholesaler                                         15-JAN-24
+
+        102
+City Supermarket
+         2 Retailer                                           20-FEB-24
+
+CUSTOMER_ID
+-----------
+NAME
+--------------------------------------------------------------------------------
+ REGION_ID CUSTOMER_TYPE                                      JOIN_DATE
+---------- -------------------------------------------------- ---------
+
+        103
+Export Partners Co
+         3 Exporter                                           10-JAN-24
+
+        104
+Regional Distributors
+
+CUSTOMER_ID
+-----------
+NAME
+--------------------------------------------------------------------------------
+ REGION_ID CUSTOMER_TYPE                                      JOIN_DATE
+---------- -------------------------------------------------- ---------
+         4 Wholesaler                                         05-MAR-24
+
+        105
+Local Farm Store
+         1 Retailer                                           28-FEB-24
+
+
+SQL> SELECT * FROM sales_transactions;
+
+TRANSACTION_ID CUSTOMER_ID PRODUCT_ID  REGION_ID SALE_DATE   QUANTITY
+-------------- ----------- ---------- ---------- --------- ----------
+TOTAL_AMOUNT
+------------
+          1001         101          1          1 15-JAN-25         50
+      250000
+
+          1002         101          2          1 20-JAN-25        100
+       80000
+
+          1003         102          1          2 25-JAN-25         30
+      150000
+
+
+TRANSACTION_ID CUSTOMER_ID PRODUCT_ID  REGION_ID SALE_DATE   QUANTITY
+-------------- ----------- ---------- ---------- --------- ----------
+TOTAL_AMOUNT
+------------
+          1004         103          3          3 05-FEB-25         80
+       96000
+
+          1005         104          4          4 10-FEB-25         40
+      140000
+
+          1006         101          1          1 15-FEB-25         60
+      300000
+
+
+TRANSACTION_ID CUSTOMER_ID PRODUCT_ID  REGION_ID SALE_DATE   QUANTITY
+-------------- ----------- ---------- ---------- --------- ----------
+TOTAL_AMOUNT
+------------
+          1007         102          2          2 20-FEB-25        120
+       96000
+
+          1008         105          5          1 01-MAR-25         70
+       42000
+
+          1009         103          1          3 10-MAR-25         45
+      225000
+
+
+TRANSACTION_ID CUSTOMER_ID PRODUCT_ID  REGION_ID SALE_DATE   QUANTITY
+-------------- ----------- ---------- ---------- --------- ----------
+TOTAL_AMOUNT
+------------
+          1010         104          3          4 15-MAR-25         90
+      108000
+
+
+10 rows selected.
+
+SQL> -- Set better column formatting
+SQL> COLUMN region_name FORMAT A20
+SQL> COLUMN country FORMAT A15
+SQL> COLUMN product_name FORMAT A20
+SQL> COLUMN category FORMAT A15
+SQL> COLUMN name FORMAT A25
+SQL> COLUMN customer_type FORMAT A15
+SQL>
+SQL> -- Now check your tables again
 SQL> SELECT * FROM regions;
+
+ REGION_ID REGION_NAME          COUNTRY
+---------- -------------------- ---------------
+         1 Northern Province    Rwanda
+         2 Southern Province    Rwanda
+         3 Eastern Province     Rwanda
+         4 Western Province     Rwanda
+
+SQL> SELECT * FROM products;
+
+PRODUCT_ID PRODUCT_NAME         CATEGORY        UNIT_PRICE
+---------- -------------------- --------------- ----------
+         1 Arabica Coffee       Beverages             5000
+         2 Maize                Cereals                800
+         3 Beans                Legumes               1200
+         4 Tea Leaves           Beverages             3500
+         5 Potatoes             Vegetables             600
+
+SQL> SELECT * FROM customers;
+
+CUSTOMER_ID NAME                       REGION_ID CUSTOMER_TYPE   JOIN_DATE
+----------- ------------------------- ---------- --------------- ---------
+        101 Green Market Ltd                   1 Wholesaler      15-JAN-24
+        102 City Supermarket                   2 Retailer        20-FEB-24
+        103 Export Partners Co                 3 Exporter        10-JAN-24
+        104 Regional Distributors              4 Wholesaler      05-MAR-24
+        105 Local Farm Store                   1 Retailer        28-FEB-24
+
+SQL> SELECT * FROM sales_transactions;
+
+TRANSACTION_ID CUSTOMER_ID PRODUCT_ID  REGION_ID SALE_DATE   QUANTITY
+-------------- ----------- ---------- ---------- --------- ----------
+TOTAL_AMOUNT
+------------
+          1001         101          1          1 15-JAN-25         50
+      250000
+
+          1002         101          2          1 20-JAN-25        100
+       80000
+
+          1003         102          1          2 25-JAN-25         30
+      150000
+
+
+TRANSACTION_ID CUSTOMER_ID PRODUCT_ID  REGION_ID SALE_DATE   QUANTITY
+-------------- ----------- ---------- ---------- --------- ----------
+TOTAL_AMOUNT
+------------
+          1004         103          3          3 05-FEB-25         80
+       96000
+
+          1005         104          4          4 10-FEB-25         40
+      140000
+
+          1006         101          1          1 15-FEB-25         60
+      300000
+
+
+TRANSACTION_ID CUSTOMER_ID PRODUCT_ID  REGION_ID SALE_DATE   QUANTITY
+-------------- ----------- ---------- ---------- --------- ----------
+TOTAL_AMOUNT
+------------
+          1007         102          2          2 20-FEB-25        120
+       96000
+
+          1008         105          5          1 01-MAR-25         70
+       42000
+
+          1009         103          1          3 10-MAR-25         45
+      225000
+
+
+TRANSACTION_ID CUSTOMER_ID PRODUCT_ID  REGION_ID SALE_DATE   QUANTITY
+-------------- ----------- ---------- ---------- --------- ----------
+TOTAL_AMOUNT
+------------
+          1010         104          3          4 15-MAR-25         90
+      108000
+
+
+10 rows selected.
+
+SQL> -- Query 1: Top Customers by Revenue per Region (RANK, DENSE_RANK, ROW_NUMBER)
+SQL> SELECT
+  2      c.region_id,
+  3      c.customer_id,
+  4      c.name AS customer_name,
+  5      SUM(t.total_amount) AS total_revenue,
+  6      RANK() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS revenue_rank,
+  7      DENSE_RANK() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS dense_rank,
+  8      ROW_NUMBER() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS row_num
+  9  FROM sales_transactions t
+ 10  JOIN customers c ON t.customer_id = c.customer_id
+ 11  GROUP BY c.region_id, c.customer_id, c.name
+ 12  ORDER BY c.region_id, revenue_rank;
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK DENSE_RANK    ROW_NUM
+------------- ------------ ---------- ----------
+         1         101
+Green Market Ltd
+       630000            1          1          1
+
+         1         105
+Local Farm Store
+        42000            2          2          2
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK DENSE_RANK    ROW_NUM
+------------- ------------ ---------- ----------
+
+         2         102
+City Supermarket
+       246000            1          1          1
+
+         3         103
+Export Partners Co
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK DENSE_RANK    ROW_NUM
+------------- ------------ ---------- ----------
+       321000            1          1          1
+
+         4         104
+Regional Distributors
+       248000            1          1          1
+
+
+SQL> -- Query 1: Top Customers by Revenue per Region (RANK, DENSE_RANK, ROW_NUMBER)
+SQL> SELECT
+  2      c.region_id,
+  3      c.customer_id,
+  4      c.name AS customer_name,
+  5      SUM(t.total_amount) AS total_revenue,
+  6      RANK() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS revenue_rank,
+  7      DENSE_RANK() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS dense_rank,
+  8      ROW_NUMBER() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS row_num
+  9  FROM sales_transactions t
+ 10  JOIN customers c ON t.customer_id = c.customer_id
+ 11  GROUP BY c.region_id, c.customer_id, c.name
+ 12  ORDER BY c.region_id, revenue_rank;
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK DENSE_RANK    ROW_NUM
+------------- ------------ ---------- ----------
+         1         101
+Green Market Ltd
+       630000            1          1          1
+
+         1         105
+Local Farm Store
+        42000            2          2          2
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK DENSE_RANK    ROW_NUM
+------------- ------------ ---------- ----------
+
+         2         102
+City Supermarket
+       246000            1          1          1
+
+         3         103
+Export Partners Co
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK DENSE_RANK    ROW_NUM
+------------- ------------ ---------- ----------
+       321000            1          1          1
+
+         4         104
+Regional Distributors
+       248000            1          1          1
+
+
+SQL> -- Query 2: Running Total & Moving Average
+SQL> SELECT
+  2      r.region_name,
+  3      TO_CHAR(t.sale_date, 'YYYY-MM') AS sales_month,
+  4      SUM(t.total_amount) AS monthly_revenue,
+  5      SUM(SUM(t.total_amount)) OVER (
+  6          PARTITION BY r.region_id
+  7          ORDER BY TO_CHAR(t.sale_date, 'YYYY-MM')
+  8          ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  9      ) AS running_total
+ 10  FROM sales_transactions t
+ 11  JOIN regions r ON t.region_id = r.region_id
+ 12  GROUP BY r.region_id, r.region_name, TO_CHAR(t.sale_date, 'YYYY-MM')
+ 13  ORDER BY r.region_id, sales_month;
+
+REGION_NAME          SALES_M MONTHLY_REVENUE RUNNING_TOTAL
+-------------------- ------- --------------- -------------
+Northern Province    2025-01          330000        330000
+Northern Province    2025-02          300000        630000
+Northern Province    2025-03           42000        672000
+Southern Province    2025-01          150000        150000
+Southern Province    2025-02           96000        246000
+Eastern Province     2025-02           96000         96000
+Eastern Province     2025-03          225000        321000
+Western Province     2025-02          140000        140000
+Western Province     2025-03          108000        248000
+
+9 rows selected.
+
+SQL> -- Query 3: Month-over-Month Growth
+SQL> SELECT
+  2      r.region_name,
+  3      TO_CHAR(t.sale_date, 'YYYY-MM') AS sales_month,
+  4      SUM(t.total_amount) AS monthly_revenue,
+  5      LAG(SUM(t.total_amount)) OVER (
+  6          PARTITION BY r.region_id
+  7          ORDER BY TO_CHAR(t.sale_date, 'YYYY-MM')
+  8      ) AS previous_month,
+  9      ROUND(
+ 10          ((SUM(t.total_amount) - LAG(SUM(t.total_amount)) OVER (
+ 11              PARTITION BY r.region_id
+ 12              ORDER BY TO_CHAR(t.sale_date, 'YYYY-MM')
+ 13          )) / LAG(SUM(t.total_amount)) OVER (
+ 14              PARTITION BY r.region_id
+ 15              ORDER BY TO_CHAR(t.sale_date, 'YYYY-MM')
+ 16          )) * 100, 2
+ 17      ) AS growth_percent
+ 18  FROM sales_transactions t
+ 19  JOIN regions r ON t.region_id = r.region_id
+ 20  GROUP BY r.region_id, r.region_name, TO_CHAR(t.sale_date, 'YYYY-MM')
+ 21  ORDER BY r.region_id, sales_month;
+
+REGION_NAME          SALES_M MONTHLY_REVENUE PREVIOUS_MONTH GROWTH_PERCENT
+-------------------- ------- --------------- -------------- --------------
+Northern Province    2025-01          330000
+Northern Province    2025-02          300000         330000          -9.09
+Northern Province    2025-03           42000         300000            -86
+Southern Province    2025-01          150000
+Southern Province    2025-02           96000         150000            -36
+Eastern Province     2025-02           96000
+Eastern Province     2025-03          225000          96000         134.38
+Western Province     2025-02          140000
+Western Province     2025-03          108000         140000         -22.86
+
+9 rows selected.
+
+SQL> -- Query 4: Customer Segmentation (NTILE)
+SQL> SELECT
+  2      c.customer_id,
+  3      c.name AS customer_name,
+  4      SUM(t.total_amount) AS total_spent,
+  5      NTILE(4) OVER (ORDER BY SUM(t.total_amount) DESC) AS spending_quartile
+  6  FROM sales_transactions t
+  7  JOIN customers c ON t.customer_id = c.customer_id
+  8  GROUP BY c.customer_id, c.name
+  9  ORDER BY total_spent DESC;
+
+CUSTOMER_ID
+-----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_SPENT SPENDING_QUARTILE
+----------- -----------------
+        101
+Green Market Ltd
+     630000                 1
+
+        103
+Export Partners Co
+     321000                 1
+
+CUSTOMER_ID
+-----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_SPENT SPENDING_QUARTILE
+----------- -----------------
+
+        104
+Regional Distributors
+     248000                 2
+
+        102
+City Supermarket
+
+CUSTOMER_ID
+-----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_SPENT SPENDING_QUARTILE
+----------- -----------------
+     246000                 3
+
+        105
+Local Farm Store
+      42000                 4
+
+
+SQL> SQL> -- Add foreign keys after creating all tables
+SP2-0734: unknown command beginning "SQL> -- Ad..." - rest of line ignored.
+SQL> SQL> ALTER TABLE customers ADD CONSTRAINT fk_cust_region
+SP2-0734: unknown command beginning "SQL> ALTER..." - rest of line ignored.
+SQL>   2  FOREIGN KEY (region_id) REFERENCES regions(region_id);
+SQL>
+SQL> Table altered.
+SP2-0734: unknown command beginning "Table alte..." - rest of line ignored.
+SQL> SELECT constraint_name, table_name FROM user_constraints WHERE constraint_type = 'R';
+
+CONSTRAINT_NAME                TABLE_NAME
+------------------------------ ------------------------------
+FK_CUST_REGION                 CUSTOMERS
+FK_TRANS_CUSTOMER              SALES_TRANSACTIONS
+FK_TRANS_PRODUCT               SALES_TRANSACTIONS
+FK_TRANS_REGION                SALES_TRANSACTIONS
+
+SQL> -- Run your window functions queries
+SQL> -- Category 1: Ranking Functions
+SQL> SELECT
+  2      c.region_id,
+  3      c.customer_id,
+  4      c.name AS customer_name,
+  5      SUM(t.total_amount) AS total_revenue,
+  6      RANK() OVER (PARTITION BY c.region_id ORDER BY SUM(t.total_amount) DESC) AS revenue_rank
+  7  FROM sales_transactions t
+  8  JOIN customers c ON t.customer_id = c.customer_id
+  9  GROUP BY c.region_id, c.customer_id, c.name
+ 10  ORDER BY c.region_id, revenue_rank;
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK
+------------- ------------
+         1         101
+Green Market Ltd
+       630000            1
+
+         1         105
+Local Farm Store
+        42000            2
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK
+------------- ------------
+
+         2         102
+City Supermarket
+       246000            1
+
+         3         103
+Export Partners Co
+
+ REGION_ID CUSTOMER_ID
+---------- -----------
+CUSTOMER_NAME
+--------------------------------------------------------------------------------
+TOTAL_REVENUE REVENUE_RANK
+------------- ------------
+       321000            1
+
+         4         104
+Regional Distributors
+       248000            1
+
 
