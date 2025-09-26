@@ -169,7 +169,8 @@ Sell more products - offer vegetables to customers who buy drinks
 Expected result: 15-20% more sales in 6-12 months
 
 
- References
+ References: 
+ 
 1.Oracle Corporation. (2023). Oracle Database SQL Language Reference: Analytic Functions. Oracle Documentation.
 
 2.Oracle Corporation. (2023). *PL/SQL User's Guide and Reference, Release 18*. Oracle Documentation.
