@@ -1,5 +1,4 @@
-SQL> CONNECT farm_user/agriculture@XE
-Connected.
+
 SQL> -- 1. Create Regions Table
 SQL> CREATE TABLE regions (
   2      region_id NUMBER PRIMARY KEY,
